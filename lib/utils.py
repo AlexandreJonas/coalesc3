@@ -64,7 +64,9 @@ def load_mst(path: Path, line_inc: int = 100, comments : list[str] = [], disable
 	if disable_italics:
 		for i in range(len(lines)):
 			for instance in re.finditer(r"<i>(.*?)</i>", lines[i]):
-				lines[i] = lines[i].replace(instance.group(), f"\\c:1;{ instance.groups()[0].replace("\\c:0;", "\\c:1;") }\\c:0;")
+				c0 = "\\c:0;"
+				c1 = "\c:1;"
+				lines[i] = lines[i].replace(instance.group(), f"{c1}{ instance.groups()[0].replace(c0, c1) }{c0}")
 
 	lines = filter(lambda line : not any(line.startswith(tag) for tag in comments), lines)
 

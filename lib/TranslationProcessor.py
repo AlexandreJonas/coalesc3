@@ -91,9 +91,10 @@ class TranslationProcessor:
 		match self.patcher.build_info.save_method:
 			case SaveMethod.RA:
 				if lang != Language.JAPANESE:
+					idk = "+\t\tIf $W($$SW_LANGUAGE) != 1, @label(start)\n"
 					patch += f"""+\t\t$W($$COZ_SAVEPOINT) = 0;
 \t*@ref(ra):
-{ "+\t\tIf $W($$SW_LANGUAGE) != 1, @label(start)\n" if self.patcher.build_info.out_fmt == ScriptFormat.MST else "" }"""
+{ idk if self.patcher.build_info.out_fmt == ScriptFormat.MST else '' }"""
 
 					for new_index in new_indices:
 						patch += f"""+\t\tIf $W($$COZ_SAVEPOINT) == {new_index}, @label(_{new_index})
@@ -105,6 +106,7 @@ class TranslationProcessor:
 					case ScriptFormat.SCT: insts = ("MesSetMesScx", "/MesScxRA")
 				
 				if lang != Language.JAPANESE:
+					idk2 = "+\t\tIf $W($$SW_LANGUAGE) != 1, @label(end)\n"
 					patch += f"""+\t@label(start):
 """
 				
@@ -114,7 +116,7 @@ class TranslationProcessor:
 \t\tMesVoiceWait
 \t\t{insts[0]} 0, {index}
 \t\tMesMain
-{ "+\t\tIf $W($$SW_LANGUAGE) != 1, @label(end)\n" if self.patcher.build_info.out_fmt == ScriptFormat.MST and lang != Language.JAPANESE else "" }"""
+{ idk2 if self.patcher.build_info.out_fmt == ScriptFormat.MST and lang != Language.JAPANESE else "" }"""
 
 				for new_index in new_indices:
 					if lang != Language.JAPANESE:

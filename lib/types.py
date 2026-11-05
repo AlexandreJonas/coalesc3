@@ -66,7 +66,7 @@ class BuildInfo:
         initializer.pop("multilang")
 
         initializer["game"] = SupportedGame(args.game)
-        initializer["selected"] = Language(args.lang) if args.lang in Language else args.lang 
+        initializer["selected"] = Language(args.lang) if args.lang in str(Language) else args.lang 
         initializer["platform"] = initializer.pop("name")
         initializer["versioned"] = spec[args.game]["versioned"]
         initializer["comments"] = spec[args.game]["comments"]
